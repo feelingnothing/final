@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
+    <div style="vertical-align: top" class="ui container">
+        <h1 class="title">Список Дел</h1>
+
+        <form class="form" action="{{ url_for('todo.add') }}" method="post">
+            <div class="field" style="display: flex; width: 100%">
+                <label style="width: 15%; align-self: center">
+                    Название задания:
+                </label>
+                    <input type="text" class="input" name="title" placeholder="Введите название">
+            </div>
+            <div class="field" style="display: flex; width: 100%">
+                <label style="width: 15%; align-self: center">
+                    Описание задания:
+                </label>
+                    <textarea class="input" style="resize: vertical; max-height: 35rem; min-height: 2.2rem" name="description"
+                              placeholder="Введите описание"></textarea>
+            </div>
+            <button class="input button" type="submit">Добавить</button>
+        </form>
+        <hr style="background: transparent">
+
+        <label class="title">Задания</label>
+        <div style="margin-top: 1.5rem">
+            {% for todo in todo_list %}
+                <div class="container" style="background: #36393F; padding: 1rem; width: 50%; margin-bottom: 0.5rem; border-radius: 0.5rem">
+                    <p class="title">{{ todo.title }}</p>
+                    <p class="subtitle">{{ todo.description }}</p>
+
+                    {% if todo.checked == False %}
+                        <p class="subsubtitle" style="color: #F04747; margin-bottom: 1rem; margin-top: -1rem">Не завершено</p>
+                    {% else %}
+                        <p class="subsubtitle" style="color: #43B581; margin-bottom: 1rem; margin-top: -1rem">Завершено</p>
+                    {% endif %}
+
+                    {% if todo.checked == False %}
+                        <a class="button" style="background: #43B581 !important;" href="{{ url_for('todo.update', todo_id=todo.id) }}">
+                            Завершить
+                        </a>
+                    {% else %}
+                        <a class="button" style="background: #F04747 !important;" href="{{ url_for('todo.update', todo_id=todo.id) }}">
+                            Отменить
+                        </a>
+                    {% endif %}
+                    <a class="button" style="background: #F04747 !important;" href="{{ url_for('todo.delete', todo_id=todo.id) }}">Удалить</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
